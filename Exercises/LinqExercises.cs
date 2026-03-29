@@ -43,95 +43,57 @@ public sealed class LinqExercises
     }
     
 
-    /// <summary>
-    /// Task:
-    /// Check whether there is at least one inactive enrollment in the data set.
-    /// Return one line with a True/False or Yes/No answer.
-    ///
-    /// SQL:
-    /// SELECT CASE WHEN EXISTS (
-    ///     SELECT 1
-    ///     FROM Enrollments
-    ///     WHERE IsActive = 0
-    /// ) THEN 1 ELSE 0 END;
-    /// </summary>
+    
     public IEnumerable<string> Task05_IsThereAnyInactiveEnrollment()
     {
-        throw NotImplemented(nameof(Task05_IsThereAnyInactiveEnrollment));
+        var hasInactive = UniversityData.Enrollments.Any(e => !e.IsActive);
+        return [$"Inactive enrollment exists: {hasInactive}"];
     }
 
-    /// <summary>
-    /// Task:
-    /// Check whether every lecturer has a department assigned.
-    /// Use a method that validates the condition for the whole collection.
-    ///
-    /// SQL:
-    /// SELECT CASE WHEN COUNT(*) = COUNT(Department)
-    /// THEN 1 ELSE 0 END
-    /// FROM Lecturers;
-    /// </summary>
+    
     public IEnumerable<string> Task06_DoAllLecturersHaveDepartment()
     {
-        throw NotImplemented(nameof(Task06_DoAllLecturersHaveDepartment));
+        var allHaveDepartment = UniversityData.Lecturers
+            .All(l => !string.IsNullOrWhiteSpace(l.Department));
+
+        return [$"All lecturers have a department: {allHaveDepartment}"];
     }
 
-    /// <summary>
-    /// Task:
-    /// Count how many active enrollments exist in the system.
-    ///
-    /// SQL:
-    /// SELECT COUNT(*)
-    /// FROM Enrollments
-    /// WHERE IsActive = 1;
-    /// </summary>
+    
     public IEnumerable<string> Task07_CountActiveEnrollments()
     {
-        throw NotImplemented(nameof(Task07_CountActiveEnrollments));
+        var activeCount = UniversityData.Enrollments.Count(e => e.IsActive);
+        return [$"Active enrollments: {activeCount}"];
     }
 
-    /// <summary>
-    /// Task:
-    /// Return a sorted list of distinct student cities.
-    ///
-    /// SQL:
-    /// SELECT DISTINCT City
-    /// FROM Students
-    /// ORDER BY City;
-    /// </summary>
+    
     public IEnumerable<string> Task08_DistinctStudentCities()
     {
-        throw NotImplemented(nameof(Task08_DistinctStudentCities));
+        return UniversityData.Students
+            .Select(s => s.City)
+            .Distinct()
+            .OrderBy(city => city);
     }
 
-    /// <summary>
-    /// Task:
-    /// Return the three newest enrollments.
-    /// Show the enrollment date, student identifier, and course identifier.
-    ///
-    /// SQL:
-    /// SELECT TOP 3 EnrollmentDate, StudentId, CourseId
-    /// FROM Enrollments
-    /// ORDER BY EnrollmentDate DESC;
-    /// </summary>
+    
     public IEnumerable<string> Task09_ThreeNewestEnrollments()
     {
-        throw NotImplemented(nameof(Task09_ThreeNewestEnrollments));
+        return UniversityData.Enrollments
+            .OrderByDescending(e => e.EnrollmentDate)
+            .Take(3)
+            .Select(e => $"{e.EnrollmentDate:yyyy-MM-dd} | student: {e.StudentId} | course: {e.CourseId}");
     }
 
-    /// <summary>
-    /// Task:
-    /// Implement simple pagination for the course list.
-    /// Assume a page size of 2 and return the second page of data.
-    ///
-    /// SQL:
-    /// SELECT Title, Category
-    /// FROM Courses
-    /// ORDER BY Title
-    /// OFFSET 2 ROWS FETCH NEXT 2 ROWS ONLY;
-    /// </summary>
+    
     public IEnumerable<string> Task10_SecondPageOfCourses()
     {
-        throw NotImplemented(nameof(Task10_SecondPageOfCourses));
+        const int pageSize = 2;
+
+        return UniversityData.Courses
+            .OrderBy(c => c.Title)
+            .Skip(pageSize)
+            .Take(pageSize)
+            .Select(c => $"{c.Title} | {c.Category}");
     }
 
     /// <summary>
