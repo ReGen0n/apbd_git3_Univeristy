@@ -181,75 +181,74 @@ public sealed class LinqExercises
             .Select(group => $"{group.Key.FirstName} {group.Key.LastName} | highest grade: {group.Max(x => x.Grade):0.0}");
     }
 
-    /// <summary>
-    /// Challenge:
-    /// Find students who have more than one active enrollment.
-    /// Return the full name and the number of active courses.
-    ///
-    /// SQL:
-    /// SELECT s.FirstName, s.LastName, COUNT(*)
-    /// FROM Students s
-    /// JOIN Enrollments e ON s.Id = e.StudentId
-    /// WHERE e.IsActive = 1
-    /// GROUP BY s.FirstName, s.LastName
-    /// HAVING COUNT(*) > 1;
-    /// </summary>
+    
     public IEnumerable<string> Challenge01_StudentsWithMoreThanOneActiveCourse()
     {
-        throw NotImplemented(nameof(Challenge01_StudentsWithMoreThanOneActiveCourse));
+        return UniversityData.Students
+            .Join(
+                UniversityData.Enrollments.Where(e => e.IsActive),
+                student => student.Id,
+                enrollment => enrollment.StudentId,
+                (student, enrollment) => new { student.FirstName, student.LastName })
+            .GroupBy(x => new { x.FirstName, x.LastName })
+            .Where(group => group.Count() > 1)
+            .Select(group => $"{group.Key.FirstName} {group.Key.LastName} | active courses: {group.Count()}");
     }
 
-    /// <summary>
-    /// Challenge:
-    /// List the courses that start in April 2026 and do not have any final grades assigned yet.
-    ///
-    /// SQL:
-    /// SELECT c.Title
-    /// FROM Courses c
-    /// JOIN Enrollments e ON c.Id = e.CourseId
-    /// WHERE MONTH(c.StartDate) = 4 AND YEAR(c.StartDate) = 2026
-    /// GROUP BY c.Title
-    /// HAVING SUM(CASE WHEN e.FinalGrade IS NOT NULL THEN 1 ELSE 0 END) = 0;
-    /// </summary>
+    
     public IEnumerable<string> Challenge02_AprilCoursesWithoutFinalGrades()
     {
-        throw NotImplemented(nameof(Challenge02_AprilCoursesWithoutFinalGrades));
+        return UniversityData.Courses
+            .Where(c => c.StartDate.Month == 4 && c.StartDate.Year == 2026)
+            .GroupJoin(
+                UniversityData.Enrollments,
+                course => course.Id,
+                enrollment => enrollment.CourseId,
+                (course, enrollments) => new
+                {
+                    course.Title,
+                    HasAnyFinalGrade = enrollments.Any(e => e.FinalGrade.HasValue)
+                })
+            .Where(x => !x.HasAnyFinalGrade)
+            .Select(x => x.Title);
     }
 
-    /// <summary>
-    /// Challenge:
-    /// Calculate the average final grade for every lecturer across all of their courses.
-    /// Ignore missing grades but still keep the lecturers in mind as the reporting dimension.
-    ///
-    /// SQL:
-    /// SELECT l.FirstName, l.LastName, AVG(e.FinalGrade)
-    /// FROM Lecturers l
-    /// LEFT JOIN Courses c ON c.LecturerId = l.Id
-    /// LEFT JOIN Enrollments e ON e.CourseId = c.Id
-    /// WHERE e.FinalGrade IS NOT NULL
-    /// GROUP BY l.FirstName, l.LastName;
-    /// </summary>
+    
     public IEnumerable<string> Challenge03_LecturersAndAverageGradeAcrossTheirCourses()
     {
-        throw NotImplemented(nameof(Challenge03_LecturersAndAverageGradeAcrossTheirCourses));
+        return UniversityData.Lecturers
+            .GroupJoin(
+                UniversityData.Courses,
+                lecturer => lecturer.Id,
+                course => course.LecturerId,
+                (lecturer, courses) => new { lecturer, courses })
+            .Select(x => new
+            {
+                FullName = $"{x.lecturer.FirstName} {x.lecturer.LastName}",
+                Grades = x.courses
+                    .Join(
+                        UniversityData.Enrollments.Where(e => e.FinalGrade.HasValue),
+                        course => course.Id,
+                        enrollment => enrollment.CourseId,
+                        (course, enrollment) => enrollment.FinalGrade!.Value)
+            })
+            .Where(x => x.Grades.Any())
+            .Select(x => $"{x.FullName} | average grade: {x.Grades.Average():0.00}");
     }
 
-    /// <summary>
-    /// Challenge:
-    /// Show student cities and the number of active enrollments created by students from each city.
-    /// Sort the result by the active enrollment count in descending order.
-    ///
-    /// SQL:
-    /// SELECT s.City, COUNT(*)
-    /// FROM Students s
-    /// JOIN Enrollments e ON s.Id = e.StudentId
-    /// WHERE e.IsActive = 1
-    /// GROUP BY s.City
-    /// ORDER BY COUNT(*) DESC;
-    /// </summary>
+    
     public IEnumerable<string> Challenge04_CitiesAndActiveEnrollmentCounts()
     {
-        throw NotImplemented(nameof(Challenge04_CitiesAndActiveEnrollmentCounts));
+        return UniversityData.Students
+            .Join(
+                UniversityData.Enrollments.Where(e => e.IsActive),
+                student => student.Id,
+                enrollment => enrollment.StudentId,
+                (student, enrollment) => student.City)
+            .GroupBy(city => city)
+            .OrderByDescending(group => group.Count())
+            .ThenBy(group => group.Key)
+            .Select(group => $"{group.Key} | active enrollments: {group.Count()}");
     }
 
     private static NotImplementedException NotImplemented(string methodName)
