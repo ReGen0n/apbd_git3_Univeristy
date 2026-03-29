@@ -4,64 +4,44 @@ namespace LinqConsoleLab.EN.Exercises;
 
 public sealed class LinqExercises
 {
-    /// <summary>
-    /// Task:
-    /// Find all students who live in Warsaw.
-    /// Return the index number, full name, and city.
-    ///
-    /// SQL:
-    /// SELECT IndexNumber, FirstName, LastName, City
-    /// FROM Students
-    /// WHERE City = 'Warsaw';
-    /// </summary>
+    
     public IEnumerable<string> Task01_StudentsFromWarsaw()
     {
-        throw NotImplemented(nameof(Task01_StudentsFromWarsaw));
+        return UniversityData.Students
+            .Where(s => s.City == "Warsaw")
+            .Select(s => $"{s.IndexNumber} | {s.FirstName} {s.LastName} | {s.City}");
     }
-
-    /// <summary>
-    /// Task:
-    /// Build a list of all student email addresses.
-    /// Use projection so that you do not return whole objects.
-    ///
-    /// SQL:
-    /// SELECT Email
-    /// FROM Students;
-    /// </summary>
+    
+    
     public IEnumerable<string> Task02_StudentEmailAddresses()
     {
-        throw NotImplemented(nameof(Task02_StudentEmailAddresses));
+        return UniversityData.Students
+            .Select(s => s.Email);
     }
 
-    /// <summary>
-    /// Task:
-    /// Sort students alphabetically by last name and then by first name.
-    /// Return the index number and full name.
-    ///
-    /// SQL:
-    /// SELECT IndexNumber, FirstName, LastName
-    /// FROM Students
-    /// ORDER BY LastName, FirstName;
-    /// </summary>
+   
     public IEnumerable<string> Task03_StudentsSortedAlphabetically()
     {
-        throw NotImplemented(nameof(Task03_StudentsSortedAlphabetically));
+        return UniversityData.Students
+            .OrderBy(s => s.LastName)
+            .ThenBy(s => s.FirstName)
+            .Select(s => $"{s.IndexNumber} | {s.FirstName} {s.LastName}");
     }
 
-    /// <summary>
-    /// Task:
-    /// Find the first course from the Analytics category.
-    /// If such a course does not exist, return a text message.
-    ///
-    /// SQL:
-    /// SELECT TOP 1 Title, StartDate
-    /// FROM Courses
-    /// WHERE Category = 'Analytics';
-    /// </summary>
+    
     public IEnumerable<string> Task04_FirstAnalyticsCourse()
     {
-        throw NotImplemented(nameof(Task04_FirstAnalyticsCourse));
+        var course = UniversityData.Courses
+            .FirstOrDefault(c => c.Category == "Analytics");
+
+        if (course is null)
+        {
+            return ["No Analytics course found."];
+        }
+
+        return [$"{course.Title} | start: {course.StartDate:yyyy-MM-dd}"];
     }
+    
 
     /// <summary>
     /// Task:
