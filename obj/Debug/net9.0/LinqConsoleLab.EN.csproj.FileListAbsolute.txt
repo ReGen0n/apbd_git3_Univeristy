@@ -12,3 +12,18 @@
 /Users/pgago/Downloads/materiały_na_stronę/apbd/wykład_3/LinqConsoleLab.EN/obj/Debug/net9.0/LinqConsoleLab.EN.pdb
 /Users/pgago/Downloads/materiały_na_stronę/apbd/wykład_3/LinqConsoleLab.EN/obj/Debug/net9.0/LinqConsoleLab.EN.genruntimeconfig.cache
 /Users/pgago/Downloads/materiały_na_stronę/apbd/wykład_3/LinqConsoleLab.EN/obj/Debug/net9.0/ref/LinqConsoleLab.EN.dll
+D:\DISC C\Desktop\LinqConsoleLab.EN\bin\Debug\net9.0\LinqConsoleLab.EN.exe
+D:\DISC C\Desktop\LinqConsoleLab.EN\bin\Debug\net9.0\LinqConsoleLab.EN.deps.json
+D:\DISC C\Desktop\LinqConsoleLab.EN\bin\Debug\net9.0\LinqConsoleLab.EN.runtimeconfig.json
+D:\DISC C\Desktop\LinqConsoleLab.EN\bin\Debug\net9.0\LinqConsoleLab.EN.dll
+D:\DISC C\Desktop\LinqConsoleLab.EN\bin\Debug\net9.0\LinqConsoleLab.EN.pdb
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.GeneratedMSBuildEditorConfig.editorconfig
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.AssemblyInfoInputs.cache
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.AssemblyInfo.cs
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.csproj.CoreCompileInputs.cache
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.sourcelink.json
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.dll
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\refint\LinqConsoleLab.EN.dll
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.pdb
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\LinqConsoleLab.EN.genruntimeconfig.cache
+D:\DISC C\Desktop\LinqConsoleLab.EN\obj\Debug\net9.0\ref\LinqConsoleLab.EN.dll
